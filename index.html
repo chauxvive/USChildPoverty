@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="node_modules/ol/ol.css">
+    <title>Education levels in the US</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson@3"></script>
+
+</head>
+<body>
+    <h1 id='title'>Education levels in the US</h1>
+    <h3 id='description'>Percentage of adults age 25 and older with a bachelor's degree or higher (2010-2014)</h3>
+    <div id="tooltip"></div>
+
+    <svg id="canvas">
+
+    </svg>
+
+    <svg id="legend">
+        <g>
+            <rect x="10" y="0" width="40" height ="40" fill="#004c6d" />
+            <text x="60" y="20" fill="colors[0]"> &gt;75% </text>
+        </g>
+        <g>
+            <rect x="10" y="40" width="40" height ="40" fill="#3d708f" />
+            <text x="60" y="60" fill="colors[1]"> &gt;50% </text>
+        </g>
+        <g>
+            <rect x="10" y="80" width="40" height ="40" fill="#6996b3" />
+            <text x="60" y="100" fill="colors[2]"> &gt;25%</text>
+        </g>
+        <g>
+            <rect x="10" y="120" width="40" height ="40" fill="#c1e7ff" />
+            <text x="60" y="140" fill="colors[3]"> 0-25%</text>
+        </g>
+    </svg>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+</body>
+</html>
