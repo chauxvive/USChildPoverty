@@ -3,10 +3,10 @@
 const colors = ["#004c6d", "#3d708f", "#6996b3","#94bed9", "#c1e7ff"];
 
 const countiesURL = "https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/counties.json";
-const educationURL = "https://cdn.freecodecamp.org/testable-projects-fcc/data/choropleth_map/for_user_education.json";
+const educationURL = "Poverty2023.json";
 
 let educationData, countiesData;
-let tooltip = d3.select('#tooltip')
+let tooltip = d3.select('#tooltip');
 
 Promise.all([
     fetch(educationURL).then(res => res.json()),
@@ -34,50 +34,47 @@ const drawMap = () => {
         .attr("class", "county")
         .attr("fill", (countyDataItem) => {
             let id = countyDataItem.id;
-            let county = educationData.find((item) => {
-                return item['fips'] === id;
-            });
-            let percentage = county.bachelorsOrHigher;
-            if (percentage > 75){
-                return colors[0]
-            } else if (percentage >50) {
-                return colors[1]
-            } else if (percentage >25) {
-                return colors[2]
-            } else {
-                return colors[3]
-            };
+            let county = educationData.find((item) => item.FIPS_Code === id && item.Attribute === "PCTPOV517_2023");
         
+            if (!county) {
+                return "#ccc"; // Default color if no data is found
+            }
+        
+            let percentage = county.Value;
+            
+            if (percentage > 75) {
+                return colors[0];
+            } else if (percentage > 50) {
+                return colors[1];
+            } else if (percentage > 25) {
+                return colors[2];
+            } else {
+                return colors[3];
+            }
         })
-        .attr('data-fips', (countyDataItem) => {
-            return countyDataItem.id;
-        })
+        .attr('data-fips', (countyDataItem) => countyDataItem.id)
         .attr('data-education', (countyDataItem) => {
             let id = countyDataItem.id;
-            let county = educationData.find((item) => {
-                return item['fips'] === id;
-            });
-            return county.bachelorsOrHigher;
+            let county = educationData.find(item => item.FIPS_Code === id && item.Attribute === "PCTPOV517_2023");
+            return county ? county.Value : "No Data";
         })
-        .on('mouseover', (e, d) => {
-            const item = e.target; 
-            tooltip.transition()
-                .style('visibility', 'visible')
+        .on('mouseover', (event, d) => {
             let id = d.id;
-            let county = educationData.find((item) => {
-                return item['fips'] === id;
-            });
-            let percentage = county.bachelorsOrHigher;
-            tooltip.text(percentage+'%')
-            .attr('data-education', percentage)
-        })
-        .on('mouseout', (item) => {
-            tooltip.transition()
-                .style('visibility', 'hidden');
+            let county = educationData.find(item => item.FIPS_Code === id && item.Attribute === "PCTPOV517_2023");
 
+            if (!county) {
+                tooltip.style('visibility', 'hidden');
+                return;
+            }
+
+            let percentage = county.Value;
+            tooltip.style('visibility', 'visible')
+                .html(`${county.Area_Name}, ${county.Stabr}: ${percentage}%`)
+                .attr('data-education', percentage)
+                .style('left', event.pageX + 10 + 'px')
+                .style('top', event.pageY - 20 + 'px');
         })
+        .on('mouseout', () => {
+            tooltip.style('visibility', 'hidden');
+        });
 };
-
-
-//console.log(d3);
-//console.log(topojson);
