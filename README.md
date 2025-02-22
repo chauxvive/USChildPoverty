@@ -62,4 +62,4 @@ I’m a **Software Developer & Marketing Specialist** from Connecticut, open to 
 
 ---
 
-💡 **Suggestions or bug reports?** Open an issue or submit a PR! 🚀  
+💡 **Suggestions or bug reports?** Open an issue or submit a PR! 
